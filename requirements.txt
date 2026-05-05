@@ -9,3 +9,4 @@ geopandas
 shapely
 pyproj
 rtree
+scikit-learn
