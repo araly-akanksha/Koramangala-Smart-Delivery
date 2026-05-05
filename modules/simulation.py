@@ -1,4 +1,4 @@
-from modules.traffic import classify_traffic, pick_congested_nodes, build_traffic_graph
+from .traffic import classify_traffic, pick_congested_nodes, build_traffic_graph
 import osmnx as ox
 import networkx as nx
 import numpy as np
