@@ -1,7 +1,11 @@
 streamlit
 pandas
 numpy
-networkx
-osmnx
+networkx==3.1
+osmnx==1.5.1
 pydeck
 plotly
+geopandas
+shapely
+pyproj
+rtree
