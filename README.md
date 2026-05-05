@@ -8,7 +8,7 @@ Built using **Streamlit + Graph Algorithms + OSMnx**, this project simulates how
 
 ## 🌐 Live Demo
 
-👉 [Click here to view the app]([https://your-app-name.streamlit.app](https://koramangala-smart-delivery-3qhkl45dczux4vfkkkxrcv.streamlit.app/))
+👉 [Click here to view the app](https://koramangala-smart-delivery-3qhkl45dczux4vfkkkxrcv.streamlit.app/)
 
 ---
 
