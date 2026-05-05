@@ -131,13 +131,13 @@ project/
 
 ## ▶️ Run Locally
 
-```bash
+```bash```
 git clone https://github.com/your-username/your-repo.git
 cd your-repo
 
 pip install -r requirements.txt
 
-streamlit run app.py```
+streamlit run app.py
 
 ---
 
