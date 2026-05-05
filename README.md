@@ -75,9 +75,7 @@ Built using **Streamlit + Graph Algorithms + OSMnx**, this project simulates how
 ## 🏗️ Project Structure
 project/
 │
-
 ├── app.py
-
 ├── modules/
 
 │ ├── data_loader.py
