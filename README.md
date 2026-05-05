@@ -132,8 +132,7 @@ project/
 ## ▶️ Run Locally
 
 ```bash```
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone (https://github.com/araly-akanksha/Koramangala-Smart-Delivery)
 
 pip install -r requirements.txt
 
