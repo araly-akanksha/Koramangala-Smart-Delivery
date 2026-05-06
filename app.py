@@ -170,32 +170,75 @@ def run_simulation(
             d_risk       = delivery.get("delay_risk_score", 0.5)
             d_seed       = TRAFFIC_SEED_BASE + delivery_index
 
-            # ── Traffic-aware routing for each leg ───────────────────────────
+           # ── Traffic-aware routing for each leg ───────────────────────────
             is_ground = mode in ("AI_Scooter", "Petrol_Scooter")
             use_traffic = enable_traffic and is_ground
 
             def route_leg(s_lat, s_lon, e_lat, e_lon):
+
+                # 🚁 Drone → triangular flight path
+                if mode == "Drone":
+
+                    leg1, _, _, _, _ = get_route_with_traffic(
+                        HUB_LAT, HUB_LON,
+                        pick_lat, pick_lon,
+                        "Drone", G
+                    )
+
+                    leg2, _, _, _, _ = get_route_with_traffic(
+                        pick_lat, pick_lon,
+                        drop_lat, drop_lon,
+                        "Drone", G
+                    )
+
+                    leg3, _, _, _, _ = get_route_with_traffic(
+                        drop_lat, drop_lon,
+                        HUB_LAT, HUB_LON,
+                        "Drone", G
+                    )
+
+                    full_drone_route = leg1 + leg2 + leg3
+
+                    return full_drone_route, False, "NONE", [], []
+
+                # 🚚 Ground vehicles with traffic routing
                 if use_traffic:
                     return get_route_with_traffic(
-                        s_lat, s_lon, e_lat, e_lon, mode, G,
-                        speed_kmph=d_speed, delay_risk=d_risk,
+                        s_lat, s_lon, e_lat, e_lon,
+                        mode, G,
+                        speed_kmph=d_speed,
+                        delay_risk=d_risk,
                         delivery_seed=d_seed
                     )
+
+                # 🚚 Ground vehicles without traffic
                 else:
-                    # Straight passthrough — no traffic
                     orig = ox.distance.nearest_nodes(G, s_lon, s_lat)
                     dest = ox.distance.nearest_nodes(G, e_lon, e_lat)
+
                     try:
                         path = nx.shortest_path(G, orig, dest, weight="length")
                         coords = [[G.nodes[n]['x'], G.nodes[n]['y']] for n in path]
                     except nx.NetworkXNoPath:
                         coords = []
+
                     return coords, False, "NONE", [], []
 
-            leg1, r1, tl1, op1, ap1 = route_leg(HUB_LAT, HUB_LON,  pick_lat, pick_lon)
-            leg2, r2, tl2, op2, ap2 = route_leg(pick_lat, pick_lon, drop_lat, drop_lon)
-            leg3, r3, tl3, op3, ap3 = route_leg(drop_lat, drop_lon, HUB_LAT,  HUB_LON)
 
+            leg1, r1, tl1, op1, ap1 = route_leg(
+                HUB_LAT, HUB_LON,
+                pick_lat, pick_lon
+            )
+
+            leg2, r2, tl2, op2, ap2 = route_leg(
+                pick_lat, pick_lon,
+                drop_lat, drop_lon
+            )
+
+            leg3, r3, tl3, op3, ap3 = route_leg(
+                drop_lat, drop_lon,
+                HUB_LAT, HUB_LON
+            )
             full_route   = leg1 + leg2 + leg3
             was_rerouted = r1 or r2 or r3
             # Overall traffic level = worst leg
